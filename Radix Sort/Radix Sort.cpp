@@ -16,15 +16,12 @@ Signature: Andrew Kim
 
 using namespace std;
 
-void insertionSort(vector<unsigned int>&, const unsigned int);
-
 
 int main()
 {
-	unsigned int max = 0, divisor = 1, digit, index;
+	unsigned int max = 0, divisor = 10, digit, index;
 	unsigned int* nums = new unsigned int[200];
 	vector<vector<unsigned int>> buckets(10); // Create 10 buckets for digits
-	//vector<unsigned int> bucket;
 
 	srand((unsigned)time(NULL));
 
@@ -46,25 +43,23 @@ int main()
 	// Iterate through each digit starting from the least significant digit
 	while (max > 0)
 	{
-		cout << max << endl; //delete
-
 		// Iterate through each number
 		for (unsigned int i = 0; i < 200; i++)
 		{
-			digit = nums[i] % divisor; // Determine current digit
+			digit = (nums[i] / divisor) % 10; // Determine current digit
 			buckets.at(digit).push_back(nums[i]); // Place element in bucket
 		}
 
+		// Assign sorted digits from buckets to array
 		index = 0;
 		for (unsigned int j = 0; j <= 9; j++)
 		{
 			for (unsigned int i = 0; i < buckets.at(j).size(); i++)
 			{
 				nums[index] = buckets.at(j).at(i);
-				if (index < 199)
+				if (index < 200)
 					index++;
 			}
-
 			buckets.at(j).clear(); // Clear bucket
 		}
 
@@ -73,7 +68,6 @@ int main()
 		divisor *= 10;
 	}
 
-
 	// Print sorted numbers
 	cout << endl << "Sorted numbers:" << endl;
 	for (unsigned int i = 0; i < 200; i++)
@@ -81,26 +75,4 @@ int main()
 
 	// Deallocate memory
 	delete[] nums;
-}
-
-
-// Sorts elements in array via insertion sort
-void insertionSort(vector<unsigned int>& nums, const unsigned int size)
-{
-	int j, limit;
-
-	for (unsigned int i = 1; i < size; i++)
-	{
-		limit = nums.at(i); // Selects first unsorted element
-		j = i - 1;
-
-		// Shifts elements of array to the right
-		while (j >= 0 && nums.at(j) > limit)
-		{
-			nums.at(j + 1) = nums.at(j);
-			j = j - 1;
-		}
-
-		nums.at(j + 1) = limit; // Places unsorted element in sorted position
-	}
 }
